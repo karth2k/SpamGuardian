@@ -32,20 +32,20 @@ dataset = dataset.train_test_split(test_size=0.2)
 
 #Training args
 training_args = TrainingArguments(
-    output_dir="./results",                  # where to save model and logs
-    eval_strategy="epoch",                   # evaluate at each epoch
-    save_strategy="epoch",                   # save model at each epoch
-    logging_strategy="steps",                # log every n steps
+    output_dir="./results",                  
+    eval_strategy="epoch",                   
+    save_strategy="epoch",                  
+    logging_strategy="steps",               
     logging_steps=10,
-    per_device_train_batch_size=16,          # tune based on VRAM
+    per_device_train_batch_size=16,        
     per_device_eval_batch_size=16,
     num_train_epochs=3,
     weight_decay=0.01,
-    load_best_model_at_end=True,             # automatically load best eval checkpoint
-    metric_for_best_model="accuracy",        # used to select best model
-    save_total_limit=1,                      # keep only last checkpoint
-    fp16=True,                               # use mixed precision (faster on RTX 5070)
-    report_to="none"                         # disables W&B or other trackers unless needed
+    load_best_model_at_end=True,            
+    metric_for_best_model="accuracy",        
+    save_total_limit=1,                     
+    fp16=True,                              
+    report_to="none"                         
 )
 #BERT model
 model = BertForSequenceClassification.from_pretrained("bert-base-uncased",
