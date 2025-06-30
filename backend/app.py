@@ -23,7 +23,7 @@ def predict(text):
         outputs = model(**inputs)
         logits = outputs.logits
         pred = torch.argmax(logits, dim = 1).item()
-        label = "spam" if pred == 1 else "good"
+        label = "This message is most likely spam." if pred == 1 else "This message is most likely NOT spam."
         return label
     
 #API Endpoint
