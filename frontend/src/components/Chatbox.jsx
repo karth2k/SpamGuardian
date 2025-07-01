@@ -6,6 +6,7 @@ import { useEffect, useRef } from "react";
 export default function Chatbox(){
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     const bottomRef = useRef(null);
 
@@ -14,12 +15,15 @@ export default function Chatbox(){
     }, [messages]);
 
     const sendMessage = async () => {
-        if (!input.trim()) return;
+        if (!input.trim() || isLoading) return;
         const userMsg = {text: input, type: "user"};
         setMessages((prev) => [...prev, userMsg]);
 
         setInput("");
 
+        const typingMsg = {text: "Thinking...", type: "bot", temp: true};
+        setMessages((prev)=> [...prev, typingMsg]);
+        setIsLoading(true);
         try {
             const res = await fetch("http://localhost:5000/predict", {
                 method: "POST",
@@ -32,10 +36,13 @@ export default function Chatbox(){
                 text: `Label: ${data.label}`,
                 type: "bot",
             }
-            setMessages((prev) => [...prev, botMsg]);  
+            setMessages((prev) => [...prev.filter(msg => !msg.temp), botMsg]);  
         }
         catch (err){
-            setMessages((prev) => [...prev, {text: "Error reaching server", type: "bot"}]);
+            setMessages((prev) => [...prev.filter(msg => !msg.temp), {text: "Error reaching server", type: "bot"}]);
+        }
+        finally{
+            setIsLoading(false);
         }
         
     };
@@ -50,7 +57,7 @@ export default function Chatbox(){
             <h1 className="text-xl font-semibold mb-4">Spam Guardian</h1>
             <div className = "flex-1 overflow-y-auto mb-4 border p-4 rounded">
                 {messages.map((msg, idx)=> (
-                    <Message key = {idx} text = {msg.text} type = {msg.type}></Message>
+                    <Message key = {idx} text = {msg.text} type = {msg.type} isTemp = {msg.temp}></Message>
                 ))}
                 <div ref={bottomRef} />
             </div>
@@ -58,7 +65,7 @@ export default function Chatbox(){
                 <input value={input} onChange = {(e)=>setInput(e.target.value)}
                 onKeyDown = {handleKeyDown} placeholder="Enter text here to check if its spam..."
                 className="flex-1 border px-4 py-2 rounded-l"/>
-                <button onClick={sendMessage} className="bg-blue-500 text-white px-4 py-2 rounded-r">
+                <button disabled = {isLoading} onClick={sendMessage} className={`px-4 py-2 rounded-r ${isLoading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 text-white"}`}>
                     Send
                 </button>
             </div>
