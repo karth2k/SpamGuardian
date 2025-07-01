@@ -10,7 +10,7 @@ I first began by researching on transformers and stumbled upon BERT/DistilBERT. 
 1. Download Repository locally
 2. Create a folder labeled "model" within the SpamGuardian folder
 3. In the terminal (can first create a virtual environment if needed) do `pip install -r requirements.txt`
-4. Go into the backend/ folder Run train_model.py (it should finetune the DistilBERT Model from transformers and save it within the model/ folder)
+4. Go into the backend/ folder Run train_model.py (it should train the DistilBERT Model from transformers and save it within the model/ folder)
 5. Next run the Flask server by doing `python app.py` within the backend/ server.
 6. Next within the frontend/ folder do `npm run dev` within the terminal. 
 7. Open the locally hosted server and try it out!
