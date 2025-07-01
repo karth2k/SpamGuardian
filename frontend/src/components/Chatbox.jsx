@@ -25,7 +25,7 @@ export default function Chatbox(){
         setMessages((prev)=> [...prev, typingMsg]);
         setIsLoading(true);
         try {
-            const res = await fetch("http://localhost:5000/predict", {
+            const res = await fetch("http://127.0.0.1:5000/predict", {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({text: input}),
@@ -33,7 +33,7 @@ export default function Chatbox(){
 
             const data = await res.json();
             const botMsg = {
-                text: `Label: ${data.label}`,
+                text: `${data.label}`,
                 type: "bot",
             }
             setMessages((prev) => [...prev.filter(msg => !msg.temp), botMsg]);  

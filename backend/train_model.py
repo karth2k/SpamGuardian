@@ -1,4 +1,4 @@
-from transformers import BertTokenizer, BertForSequenceClassification, TrainingArguments, Trainer
+from transformers import DistilBertTokenizer, DistilBertForSequenceClassification, TrainingArguments, Trainer
 from datasets import Dataset
 import pandas as pd
 import numpy as np
@@ -18,7 +18,7 @@ print(df.head())
 dataset = Dataset.from_pandas(df)
 
 #Bert Tokenizer
-tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
+tokenizer = DistilBertTokenizer.from_pretrained("distilbert-base-uncased")
 
 #Tokenizing funciton
 def tokenize_batch(batch):
@@ -48,8 +48,8 @@ training_args = TrainingArguments(
     report_to="none"                         
 )
 #BERT model
-model = BertForSequenceClassification.from_pretrained("bert-base-uncased",
-                                                      num_labels = 2)
+model = DistilBertForSequenceClassification.from_pretrained("distilbert-base-uncased", 
+                                                            num_labels=2)
 
 #Compute metrics function
 def compute_metrics(p):

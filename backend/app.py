@@ -1,13 +1,14 @@
 from flask import Flask, request, jsonify
 import torch
-from transformers import BertTokenizer, BertForSequenceClassification
+from transformers import DistilBertTokenizer, DistilBertForSequenceClassification
+from flask_cors import CORS 
 
 app = Flask(__name__)
-
+CORS(app)
 #Load model and tokenizer at startup
 model_path = "./model"
-tokenizer = BertTokenizer.from_pretrained(model_path)
-model = BertForSequenceClassification.from_pretrained(model_path)
+tokenizer = DistilBertTokenizer.from_pretrained(model_path)
+model = DistilBertForSequenceClassification.from_pretrained(model_path)
 model.eval()
 
 #Loading Model
